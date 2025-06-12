@@ -152,3 +152,4 @@
 /Users/neothabethe/Documents/nicenice/nicenice.Server/obj/Debug/net8.0/nicenice.Server.pdb
 /Users/neothabethe/Documents/nicenice/nicenice.Server/obj/Debug/net8.0/nicenice.Server.genruntimeconfig.cache
 /Users/neothabethe/Documents/nicenice/nicenice.Server/obj/Debug/net8.0/ref/nicenice.Server.dll
+/Users/neothabethe/Documents/nicenice/nicenice.Server/bin/Debug/net8.0/railway.json
