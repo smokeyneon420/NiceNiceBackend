@@ -1,0 +1,4 @@
+{
+  "build": "dotnet publish -c Release -o out",
+  "start": "dotnet out/nicenice.Server.dll"
+}

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/nicenice.Server.props" />
+</Project>
