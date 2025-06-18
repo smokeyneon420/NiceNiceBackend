@@ -112,12 +112,6 @@ namespace nicenice.Server.NiceNiceDb
                 .WithMany()
                 .HasForeignKey(r => r.DriverId)
                 .OnDelete(DeleteBehavior.SetNull);
-            builder.Entity<DriverLocation>()
-                .HasOne(dl => dl.Driver)
-                .WithMany()
-                .HasForeignKey(dl => dl.DriverId)
-                .OnDelete(DeleteBehavior.Cascade);
-
         }
         public DbSet<Drivers> Drivers { get; set; }
         public DbSet<Profilephotos> Profilephotos { get; set; }
@@ -156,7 +150,6 @@ namespace nicenice.Server.NiceNiceDb
         public DbSet<Ride> Rides { get; set; }
         public DbSet<Passengers> Passengers { get; set; }
         public DbSet<PassengerDriver> PassengerDrivers { get; set; }
-        public DbSet<DriverLocation> DriverLocations { get; set; }
         public DbSet<PassengersCar> PassengersCars { get; set; }
     }
 }
