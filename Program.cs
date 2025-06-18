@@ -131,6 +131,5 @@ app.UseEndpoints(endpoints =>
 });
 app.MapHub<ChatHub>("/chatHub");
 app.MapHub<RideHub>("/ridehub");
-app.MapHub<LocationHub>("/locationHub");
 
 app.Run();

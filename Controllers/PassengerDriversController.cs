@@ -202,5 +202,24 @@ namespace nicenice.Server.Controllers
                 return BadRequest("Error saving to DB: " + ex.Message);
             }
         }
+
+        [HttpGet("latest-location/{rideId}")]
+        public async Task<IActionResult> GetLatestDriverLocation(Guid rideId)
+        {
+            var location = await _context.DriverLocations
+                .Where(l => l.RideId == rideId)
+                .OrderByDescending(l => l.Timestamp)
+                .Select(l => new {
+                    l.Latitude,
+                    l.Longitude,
+                    l.Timestamp
+                })
+                .FirstOrDefaultAsync();
+
+            if (location == null)
+                return NotFound("No location found for this ride.");
+
+            return Ok(location);
+        }
     }
 }

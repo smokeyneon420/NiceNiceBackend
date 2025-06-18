@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("nicenice.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dde75a83f320c02072636e56388626d435708aee")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bf04f58c8c5c3e3415b21688c6617fdf214f08a4")]
 [assembly: System.Reflection.AssemblyProductAttribute("nicenice.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("nicenice.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
