@@ -14,7 +14,6 @@ namespace nicenice.Server.NiceNiceDb
         {
             base.OnModelCreating(builder);
             builder.HasDefaultSchema("dbo");
-            // Specify the schema for Identity tables and their names
             builder.Entity<NiceUser>().ToTable($"Users", Auth);
             builder.Entity<Role>().ToTable($"{nameof(Role)}s", Auth);
             builder.Entity<UserClaim>().ToTable($"{nameof(UserClaim)}s", Auth);
@@ -54,7 +53,7 @@ namespace nicenice.Server.NiceNiceDb
             .HasOne(f => f.FleetSupplier)
             .WithMany(fs => fs.Cars)
             .HasForeignKey(f => f.FleetSupplierId);
-            builder.Entity<Invoice>().ToTable("Invoices", "dbo"); // specify your desired schema here
+            builder.Entity<Invoice>().ToTable("Invoices", "dbo");
             builder.Entity<Invoice>().Property(i => i.Amount).HasPrecision(18, 2);
             builder.Entity<VehiclePricing>().ToTable("VehiclePricing", "dbo");
             builder.Entity<VehiclePricing>().HasData(
@@ -112,6 +111,22 @@ namespace nicenice.Server.NiceNiceDb
                 .WithMany()
                 .HasForeignKey(r => r.DriverId)
                 .OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<DriverLocation>().ToTable("DriverLocations", "Passengers");
+            builder.Entity<DriverLocation>()
+                .HasKey(dl => dl.Id);
+
+            builder.Entity<DriverLocation>()
+                .HasOne(dl => dl.Driver)
+                .WithMany()
+                .HasForeignKey(dl => dl.DriverId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<DriverLocation>()
+                .HasOne(dl => dl.Ride)
+                .WithMany()
+                .HasForeignKey(dl => dl.RideId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
         public DbSet<Drivers> Drivers { get; set; }
         public DbSet<Profilephotos> Profilephotos { get; set; }
@@ -151,5 +166,6 @@ namespace nicenice.Server.NiceNiceDb
         public DbSet<Passengers> Passengers { get; set; }
         public DbSet<PassengerDriver> PassengerDrivers { get; set; }
         public DbSet<PassengersCar> PassengersCars { get; set; }
+        public DbSet<DriverLocation> DriverLocations { get; set; }
     }
 }

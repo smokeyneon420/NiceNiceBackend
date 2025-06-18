@@ -50,7 +50,7 @@ namespace nicenice.Server.Controllers
 
             return Ok(new { message = "Driver registered successfully." });
         }
-        
+
         [HttpGet("getDriverIdByUserId/{userId}")]
         public async Task<IActionResult> GetDriverIdByUserId(Guid userId)
         {
@@ -154,6 +154,53 @@ namespace nicenice.Server.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { imageUrl = driver.ProfileImageUrl });
+        }
+
+        [HttpPost("update-location")]
+        public async Task<IActionResult> UpdateDriverLocation([FromBody] DriverLocationDto dto)
+        {
+            var userId = _identityService.GetUserId();
+
+            if (userId == null || userId == Guid.Empty)
+            {
+                Console.WriteLine("❌ Could not extract user ID from token.");
+                return Unauthorized("User not authenticated.");
+            }
+
+            var driverId = await _context.PassengerDrivers
+                .Where(d => d.UserId == userId)
+                .Select(d => d.Id)
+                .FirstOrDefaultAsync();
+
+            if (driverId == Guid.Empty)
+            {
+                Console.WriteLine("❌ No driver found with this UserId.");
+                return NotFound("Driver profile not found.");
+            }
+
+            var location = new DriverLocation
+            {
+                Id = Guid.NewGuid(),
+                DriverId = driverId,
+                RideId = dto.RideId,
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                Timestamp = DateTime.UtcNow
+            };
+
+            try
+            {
+                _context.DriverLocations.Add(location);
+                await _context.SaveChangesAsync();
+
+                Console.WriteLine($"✅ Location saved: {location.Id}");
+                return Ok(new { message = "Location stored." });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error: {ex.Message}");
+                return BadRequest("Error saving to DB: " + ex.Message);
+            }
         }
     }
 }
