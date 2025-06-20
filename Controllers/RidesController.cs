@@ -302,7 +302,9 @@ namespace nicenice.Server.Controllers
             return Ok(new
             {
                 status = ride.Status,
-                driver = driverInfo
+                driver = driverInfo,
+                pickupLocation = ride.PickupLocation,
+                dropoffLocation = ride.DropoffLocation
             });
         }
 
