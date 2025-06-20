@@ -18,7 +18,7 @@ var config = builder.Configuration;
 var allowedOrigins = new[]
 {
     "https://localhost:5173",
-    "http://192.168.8.13:8081"
+    "http://192.168.8.45:8081"
 };
 var backendBaseUrl = "http://0.0.0.0:5158";
 

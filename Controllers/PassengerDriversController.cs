@@ -178,22 +178,32 @@ namespace nicenice.Server.Controllers
                 return NotFound("Driver profile not found.");
             }
 
-            var location = new DriverLocation
+            var existingLocation = await _context.DriverLocations
+                .FirstOrDefaultAsync(l => l.DriverId == driverId && l.RideId == dto.RideId);
+
+            if (existingLocation != null)
             {
-                Id = Guid.NewGuid(),
-                DriverId = driverId,
-                RideId = dto.RideId,
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                Timestamp = DateTime.UtcNow
-            };
+                existingLocation.Latitude = dto.Latitude;
+                existingLocation.Longitude = dto.Longitude;
+                existingLocation.Timestamp = DateTime.UtcNow;
+            }
+            else
+            {
+                _context.DriverLocations.Add(new DriverLocation
+                {
+                    Id = Guid.NewGuid(),
+                    DriverId = driverId,
+                    RideId = dto.RideId,
+                    Latitude = dto.Latitude,
+                    Longitude = dto.Longitude,
+                    Timestamp = DateTime.UtcNow
+                });
+            }
 
             try
             {
-                _context.DriverLocations.Add(location);
                 await _context.SaveChangesAsync();
-
-                Console.WriteLine($"✅ Location saved: {location.Id}");
+                Console.WriteLine("✅ Location updated.");
                 return Ok(new { message = "Location stored." });
             }
             catch (Exception ex)
@@ -203,13 +213,14 @@ namespace nicenice.Server.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("latest-location/{rideId}")]
         public async Task<IActionResult> GetLatestDriverLocation(Guid rideId)
         {
             var location = await _context.DriverLocations
                 .Where(l => l.RideId == rideId)
-                .OrderByDescending(l => l.Timestamp)
-                .Select(l => new {
+                .Select(l => new
+                {
                     l.Latitude,
                     l.Longitude,
                     l.Timestamp
